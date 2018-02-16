@@ -32,10 +32,24 @@ void read_data(void)
 {
 	int i;
 	double diameterthathasnorealuseappearantly;
-    fscanf(init_filename, "%d\n0\t%lf\n0\t%lf\n0\t%lf", n_particles, box[0], box[1], box[2]);
+	int intinput;
+	double lfinp0, lfinp1, lfinp2;
+	
+	FILE *fp = fopen(init_filename, "r");
+	
+    fscanf(fp, "%d\n0\t%lf\n0\t%lf\n0\t%lf", &intinput, &lfinp0, &lfinp1, &lfinp2);
+	n_particles = intinput;
+	box[0] = lfinp0;
+	box[1] = lfinp1;
+	box[2] = lfinp2;
+	
+	
 	for(i=0; i<n_particles; i++)
 	{
-		fscanf(init_filename, "\n%lf\t%lf\t%lf\t%lf", r[i][0], r[i][1], r[i][3], diameterthathasnorealuseappearantly);
+		fscanf(fp, "\n%lf\t%lf\t%lf\t%lf", &lfinp0, &lfinp1, &lfinp2, &diameterthathasnorealuseappearantly);
+		r[i][0] = lfinp0;
+		r[i][1] = lfinp1;
+		r[i][2] = lfinp2;
 	}
 	radius = diameterthathasnorealuseappearantly/2;
 	particle_volume = 4/3*M_PI*radius*radius*radius;
@@ -131,7 +145,7 @@ int move_particle(void)
 						if((r[i][0]-xnew)*(r[i][0]-xnew)
 								+(r[i][0]-ynew)*(r[i][0]-ynew)
 								+(r[i][0]-znew)*(r[i][0]-znew)
-								>=(2*radius)(2*radius))
+								>=(2*radius)*(2*radius))
 							return 0;
 	}
 	
